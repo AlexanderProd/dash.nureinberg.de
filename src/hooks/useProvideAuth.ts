@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { apiEndpoint, getCookie } from '../utils';
+import { apiEndpoint } from '../utils';
 
 export function useProvideAuth() {
   const [user, setUser] = useState(null);
@@ -14,7 +14,6 @@ export function useProvideAuth() {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
-            'x-access-token': getCookie('token'),
           },
         });
         const json = await res.json();
@@ -23,9 +22,11 @@ export function useProvideAuth() {
           setUser(json.email);
           resolve(user);
         } else {
+          setUser(null);
           reject(json.error);
         }
       } catch (error) {
+        setUser(null);
         reject(error);
       }
     });
@@ -52,9 +53,11 @@ export function useProvideAuth() {
           setUser(json.email);
           resolve(user);
         } else {
+          setUser(null);
           reject(json.error);
         }
       } catch (error) {
+        setUser(null);
         reject(error);
       }
     });
@@ -69,6 +72,7 @@ export function useProvideAuth() {
 
   return {
     user,
+    setUser,
     login,
     checkToken,
     /* signout, */

@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useReducer,
   ReactChild,
   useEffect,
@@ -60,10 +61,10 @@ const defaultContext = {
 const MainContext = createContext<State>(defaultContext);
 
 export function MainProvider({ children }: { children: ReactChild }) {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [state, dispatch] = useReducer(mainReducer, defaultContext);
 
-  const fetchEintragungen = async () => {
+  const fetchEintragungen = useCallback(async () => {
     try {
       dispatch({ type: 'EINTRAGUNGEN_REQUEST' });
       const res = await fetch(`${apiEndpoint}/bestand/eintragungen`, {
@@ -76,6 +77,7 @@ export function MainProvider({ children }: { children: ReactChild }) {
       const json = await res.json();
 
       if (res.status !== 200) {
+        if (res.status === 401) setUser(null);
         dispatch({ type: 'EINTRAGUNGEN_FAILURE', payload: json.error });
       } else {
         dispatch({ type: 'EINTRAGUNGEN_SUCCESS', payload: json });
@@ -83,9 +85,9 @@ export function MainProvider({ children }: { children: ReactChild }) {
     } catch (error) {
       dispatch({ type: 'EINTRAGUNGEN_FAILURE', payload: error.message });
     }
-  };
+  }, [setUser]);
 
-  const fetchProdukte = async () => {
+  const fetchProdukte = useCallback(async () => {
     try {
       dispatch({ type: 'PRODUKTE_REQUEST' });
       const res = await fetch(`${apiEndpoint}/bestand/produkte`, {
@@ -98,6 +100,7 @@ export function MainProvider({ children }: { children: ReactChild }) {
       const json = await res.json();
 
       if (res.status !== 200) {
+        if (res.status === 401) setUser(null);
         dispatch({ type: 'PRODUKTE_FAILURE', payload: json.error });
       } else {
         dispatch({ type: 'PRODUKTE_SUCCESS', payload: json });
@@ -105,9 +108,9 @@ export function MainProvider({ children }: { children: ReactChild }) {
     } catch (error) {
       dispatch({ type: 'PRODUKTE_FAILURE', payload: error.message });
     }
-  };
+  }, [setUser]);
 
-  const fetchRohlinge = async () => {
+  const fetchRohlinge = useCallback(async () => {
     try {
       dispatch({ type: 'ROHLINGE_REQUEST' });
       const res = await fetch(`${apiEndpoint}/bestand/rohlinge`, {
@@ -120,6 +123,7 @@ export function MainProvider({ children }: { children: ReactChild }) {
       const json = await res.json();
 
       if (res.status !== 200) {
+        if (res.status === 401) setUser(null);
         dispatch({ type: 'ROHLINGE_FAILURE', payload: json.error });
       } else {
         dispatch({ type: 'ROHLINGE_SUCCESS', payload: json });
@@ -127,7 +131,7 @@ export function MainProvider({ children }: { children: ReactChild }) {
     } catch (error) {
       dispatch({ type: 'ROHLINGE_FAILURE', payload: error.message });
     }
-  };
+  }, [setUser]);
 
   useEffect(() => {
     if (user) {
@@ -135,7 +139,7 @@ export function MainProvider({ children }: { children: ReactChild }) {
       fetchProdukte();
       fetchRohlinge();
     }
-  }, [user]);
+  }, [user, fetchEintragungen, fetchProdukte, fetchRohlinge]);
 
   const stateWithFunctions: State = {
     eintragungen: {

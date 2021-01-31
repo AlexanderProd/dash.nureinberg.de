@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
-import { useFetch } from './index';
 import { apiEndpoint } from '../utils';
+import { useFetch } from './index';
 
 export const useAPICall = <T>(
   url: string,
