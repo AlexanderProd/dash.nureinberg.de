@@ -1,5 +1,12 @@
-import React, { createContext, useReducer, ReactChild, useEffect } from 'react';
+import React, {
+  createContext,
+  useReducer,
+  ReactChild,
+  useEffect,
+  useContext,
+} from 'react';
 
+import AuthContext from '../AuthContext';
 import { apiEndpoint } from '../../utils';
 import { mainReducer } from './reducer';
 import {
@@ -53,6 +60,7 @@ const defaultContext = {
 const MainContext = createContext<State>(defaultContext);
 
 export function MainProvider({ children }: { children: ReactChild }) {
+  const { user } = useContext(AuthContext);
   const [state, dispatch] = useReducer(mainReducer, defaultContext);
 
   const fetchEintragungen = async () => {
@@ -122,10 +130,12 @@ export function MainProvider({ children }: { children: ReactChild }) {
   };
 
   useEffect(() => {
-    fetchEintragungen();
-    fetchProdukte();
-    fetchRohlinge();
-  }, []);
+    if (user) {
+      fetchEintragungen();
+      fetchProdukte();
+      fetchRohlinge();
+    }
+  }, [user]);
 
   const stateWithFunctions: State = {
     eintragungen: {
