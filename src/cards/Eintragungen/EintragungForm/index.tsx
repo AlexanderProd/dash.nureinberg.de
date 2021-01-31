@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useReducer, useContext } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useReducer,
+  useContext,
+  useEffect,
+} from 'react';
 import {
   Stack,
   Input,
@@ -77,16 +83,18 @@ const EintragungForm = () => {
     false
   );
 
-  if (error) {
-    console.error(error);
-    toast({
-      title: 'Ein Fehler ist aufgetreten.',
-      description: error.name,
-      status: 'error',
-      duration: 20000,
-      isClosable: true,
-    });
-  }
+  useEffect(() => {
+    if (status === 'error') {
+      console.error(error);
+      toast({
+        title: 'Ein Fehler ist aufgetreten.',
+        description: error.name,
+        status: 'error',
+        duration: 20000,
+        isClosable: true,
+      });
+    }
+  }, [error, status, toast]);
 
   const handleInput = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>

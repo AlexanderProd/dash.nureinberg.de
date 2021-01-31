@@ -3,6 +3,7 @@ import React, {
   SyntheticEvent,
   useReducer,
   useContext,
+  useEffect,
 } from 'react';
 import {
   Modal,
@@ -109,16 +110,18 @@ const EditRowModal = ({ row }: { row: any }) => {
     false
   );
 
-  if (error) {
-    console.error(error);
-    toast({
-      title: 'Ein Fehler ist aufgetreten.',
-      description: error,
-      status: 'error',
-      duration: 20000,
-      isClosable: true,
-    });
-  }
+  useEffect(() => {
+    if (status === 'error') {
+      console.error(error);
+      toast({
+        title: 'Ein Fehler ist aufgetreten.',
+        description: error,
+        status: 'error',
+        duration: 20000,
+        isClosable: true,
+      });
+    }
+  }, [error, status, toast]);
 
   const handleInput = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
