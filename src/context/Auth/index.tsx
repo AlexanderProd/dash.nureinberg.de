@@ -1,6 +1,6 @@
 import React, { createContext, ReactChild } from 'react';
 
-import { useProvideAuth } from '../hooks';
+import { useProvideAuth } from '../../hooks';
 
 type ContextProps = {
   user: string | null;

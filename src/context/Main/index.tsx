@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from 'react';
 
-import AuthContext from '../AuthContext';
+import AuthContext from '../Auth';
 import { apiEndpoint } from '../../utils';
 import { mainReducer } from './reducer';
 import {

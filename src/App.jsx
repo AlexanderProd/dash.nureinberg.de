@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/Auth';
 import { MainProvider } from './context/Main';
 import PrivateRoute from './components/PrivateRoute';
 import DevEnvAlert from './components/NotificationBar';
