@@ -94,7 +94,7 @@ const ProdukteCard = () => {
         />
       )}
 
-      {error && <WarningBox errorMsg={error} />}
+      {status === 'error' && <WarningBox errorMsg={error} />}
     </Card>
   );
 };

@@ -169,7 +169,7 @@ const EintragungenCard = () => {
         )}
       </Box>
 
-      {error && <WarningBox errorMsg={error} />}
+      {status === 'error' && <WarningBox errorMsg={error} />}
     </Card>
   );
 };
