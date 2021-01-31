@@ -33,13 +33,13 @@ interface State {
 }
 
 const initialState: State = {
-  bestellnummer: undefined,
-  textilkennzeichen: undefined,
-  produktnummer: undefined,
+  bestellnummer: '',
+  textilkennzeichen: '',
+  produktnummer: '',
   anzahl: 1,
   status: undefined,
-  name: undefined,
-  kommentar: undefined,
+  name: '',
+  kommentar: '',
 };
 
 type ActionType =
