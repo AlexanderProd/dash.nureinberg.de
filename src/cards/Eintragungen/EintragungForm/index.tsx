@@ -130,14 +130,19 @@ const EintragungForm = () => {
     dispatch({ type: 'SET_ANZAHL', payload: value });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    await fetchData();
-    context.eintragungen.fetchEintragungen();
-    context.produkte.fetchProdukte();
-    context.rohlinge.fetchRohlinge();
+    fetchData();
   };
+
+  useEffect(() => {
+    if (status === 'success') {
+      context.eintragungen.fetchEintragungen();
+      context.produkte.fetchProdukte();
+      context.rohlinge.fetchRohlinge();
+    }
+  }, [status, context]);
 
   return (
     <Stack

@@ -112,7 +112,6 @@ const EditRowModal = ({ row }: { row: any }) => {
 
   useEffect(() => {
     if (status === 'error') {
-      console.error(error);
       toast({
         title: 'Ein Fehler ist aufgetreten.',
         description: error,
@@ -159,14 +158,19 @@ const EditRowModal = ({ row }: { row: any }) => {
     dispatch({ type: 'SET_ANZAHL', payload: value });
   };
 
-  const handleSubmit = async (e: SyntheticEvent) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await fetchData();
-    context.eintragungen.fetchEintragungen();
-    context.produkte.fetchProdukte();
-    context.rohlinge.fetchRohlinge();
+    fetchData();
   };
+
+  useEffect(() => {
+    if (status === 'success') {
+      context.eintragungen.fetchEintragungen();
+      context.produkte.fetchProdukte();
+      context.rohlinge.fetchRohlinge();
+    }
+  }, [status, context]);
 
   return (
     <>

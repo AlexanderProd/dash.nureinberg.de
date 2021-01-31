@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import {
   Flex,
   Button,
@@ -27,14 +27,19 @@ const DeleteAlert = ({ id }) => {
 
   if (error) console.error(error);
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    await fetchData();
-    context.eintragungen.fetchEintragungen();
-    context.produkte.fetchProdukte();
-    context.rohlinge.fetchRohlinge();
+    fetchData();
   };
+
+  useEffect(() => {
+    if (status === 'success') {
+      context.eintragungen.fetchEintragungen();
+      context.produkte.fetchProdukte();
+      context.rohlinge.fetchRohlinge();
+    }
+  }, [status, context]);
 
   return (
     <>
