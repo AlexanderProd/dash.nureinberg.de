@@ -21,7 +21,7 @@ const LoginPage = () => (
             justifyContent="space-between"
           >
             <Flex flexDirection="column" alignItems="center">
-              <Heading mb={8}>NurEinBerg Dashboard :)</Heading>
+              <Heading mb={8}>NurEinBerg Dashboard</Heading>
             </Flex>
             <Login />
           </Flex>
