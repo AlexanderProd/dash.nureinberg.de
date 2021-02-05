@@ -1,5 +1,6 @@
 import React, { useMemo, useContext } from 'react';
 import { Flex, Text, Box, Heading, Skeleton, Stack } from '@chakra-ui/react';
+import { Row } from 'react-table';
 
 import MainContext from '../../context/Main';
 import StatusBadge from '../../components/ui/StatusBadge';
@@ -12,12 +13,26 @@ import { ShopifyIcon } from '../../components/ui/icons';
 import {
   SelectColumnFilter,
   SliderColumnFilter,
+  CheckboxColumnFilter,
 } from '../../components/Table/Filters';
 
 const EintragungenCard = () => {
   const {
     eintragungen: { data, status, error, fetchEintragungen },
   } = useContext(MainContext);
+
+  const MultipleFilter = useMemo(
+    () => (rows: Row[], filler: any, filterValue: Row[]) => {
+      const arr: any[] = [];
+      rows.forEach(row => {
+        // @ts-ignore
+        if (filterValue.includes(row.original.Status)) arr.push(row);
+      });
+      return arr;
+    },
+    []
+  );
+
   const rows = useMemo(() => data?.rows, [data]);
   const columns = useMemo(
     () => [
@@ -96,6 +111,7 @@ const EintragungenCard = () => {
         Header: 'Produziert',
         accessor: 'Produziert',
         disableFilters: false,
+        Filter: SelectColumnFilter,
         disableSortBy: true,
         isNumeric: true,
         Cell: ({ value }: { value: boolean }) => (value ? 1 : 0),
@@ -103,8 +119,8 @@ const EintragungenCard = () => {
       {
         Header: 'Status',
         accessor: 'Status',
-        Filter: SelectColumnFilter,
-        filter: 'includes',
+        Filter: CheckboxColumnFilter,
+        filter: MultipleFilter,
         Cell: ({ value }: { value: string | undefined }) => (
           <StatusBadge value={value} />
         ),
@@ -145,7 +161,7 @@ const EintragungenCard = () => {
         Cell: ({ row }: { row: any }) => <EditRowModal row={row} />,
       },
     ],
-    []
+    [MultipleFilter]
   );
 
   return (

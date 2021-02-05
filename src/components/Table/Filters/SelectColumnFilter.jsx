@@ -10,7 +10,7 @@ export const SelectColumnFilter = ({
     const options = new Set();
     preFilteredRows.forEach(row => {
       if (row.values[id] !== null && row.values[id] !== '')
-        options.add(row.values[id]);
+        return options.add(String(row.values[id]));
     });
     return [...options.values()];
   }, [id, preFilteredRows]);

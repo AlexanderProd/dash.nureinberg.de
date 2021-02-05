@@ -14,33 +14,16 @@ export const GlobalFilter = ({
   }, 200);
 
   return (
-    <>
-      <InputGroup size="sm">
-        <InputLeftAddon children="Suchen" />
-        <Input
-          value={value || ''}
-          onChange={e => {
-            setValue(e.target.value);
-            onChange(e.target.value);
-          }}
-          placeholder={`${count} Eintragungen...`}
-        />
-      </InputGroup>
-      {/* <span>
-        Suchen:{' '}
-        <input
-          value={value || ''}
-          onChange={e => {
-            setValue(e.target.value);
-            onChange(e.target.value);
-          }}
-          placeholder={`${count} Eintragungen...`}
-          style={{
-            fontSize: '1.1rem',
-            border: '0',
-          }}
-        />
-      </span> */}
-    </>
+    <InputGroup size="sm">
+      <InputLeftAddon children="Suchen" />
+      <Input
+        value={value || ''}
+        onChange={e => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`${count} Eintragungen...`}
+      />
+    </InputGroup>
   );
 };
