@@ -15,23 +15,12 @@ import {
   SliderColumnFilter,
   CheckboxColumnFilter,
 } from '../../components/Table/Filters';
+import { Eintragung } from '../../types';
 
 const EintragungenCard = () => {
   const {
     eintragungen: { data, status, error, fetchEintragungen },
   } = useContext(MainContext);
-
-  const MultipleFilter = useMemo(
-    () => (rows: Row[], filler: any, filterValue: Row[]) => {
-      const arr: any[] = [];
-      rows.forEach(row => {
-        // @ts-ignore
-        if (filterValue.includes(row.original.Status)) arr.push(row);
-      });
-      return arr;
-    },
-    []
-  );
 
   const rows = useMemo(() => data?.rows, [data]);
   const columns = useMemo(
@@ -120,7 +109,17 @@ const EintragungenCard = () => {
         Header: 'Status',
         accessor: 'Status',
         Filter: CheckboxColumnFilter,
-        filter: MultipleFilter,
+        filter: (
+          rows: Row<Eintragung>[],
+          filler: any,
+          filterValue: string[]
+        ) => {
+          const arr: any[] = [];
+          rows.forEach(row => {
+            if (filterValue.includes(row.original.Status)) arr.push(row);
+          });
+          return arr;
+        },
         Cell: ({ value }: { value: string | undefined }) => (
           <StatusBadge value={value} />
         ),
@@ -161,7 +160,7 @@ const EintragungenCard = () => {
         Cell: ({ row }: { row: any }) => <EditRowModal row={row} />,
       },
     ],
-    [MultipleFilter]
+    []
   );
 
   return (
