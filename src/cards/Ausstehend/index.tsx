@@ -26,16 +26,17 @@ const AusstehendCard = (props: GridItemProps) => {
 
     open?.forEach(produkt => {
       eintragungen.data?.rows?.some(
-        ({ Textilkennzeichen, Produktnummer, Name }) => {
+        ({ Textilkennzeichen, Produktnummer, Name, Status, Produziert }) => {
           if (
             produkt.Textilkennzeichen === Textilkennzeichen &&
             produkt.Produktnummer === Produktnummer &&
-            (Name !== undefined || Name !== '')
+            Produziert === false &&
+            (Status === 'Schenkung' || Status === 'Verkauf')
           )
             return openProducts.push({
               Textilkennzeichen,
               Produktnummer,
-              Bestand: produkt.Bestand,
+              Bestand: Math.abs(produkt.Bestand),
               Name,
             });
           return null;
@@ -43,13 +44,17 @@ const AusstehendCard = (props: GridItemProps) => {
       );
     });
 
-    return openProducts;
+    if (eintragungen.status === 'pending' || produkte.status === 'pending') {
+      return undefined;
+    } else {
+      return openProducts;
+    }
   }, [produkte, eintragungen]);
 
   return (
     <Card {...props}>
       <Flex flexWrap="wrap">
-        {openProducts === undefined &&
+        {!openProducts &&
           new Array(3)
             .fill('')
             .map((_, i) => (
