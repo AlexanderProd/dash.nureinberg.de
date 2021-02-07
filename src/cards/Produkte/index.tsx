@@ -1,5 +1,5 @@
 import React, { useMemo, useContext } from 'react';
-import { Flex, Text, Heading, Stack, Skeleton } from '@chakra-ui/react';
+import { Flex, Text, Stack, Skeleton, GridItemProps } from '@chakra-ui/react';
 
 import MainContext from '../../context/Main';
 import { useConditionalCellStyle } from '../../hooks';
@@ -11,7 +11,7 @@ import {
   SelectColumnFilter,
 } from '../../components/Table/Filters';
 
-const ProdukteCard = () => {
+const ProdukteCard = (props: GridItemProps) => {
   const {
     produkte: { data, status, error, fetchProdukte },
   } = useContext(MainContext);
@@ -70,11 +70,7 @@ const ProdukteCard = () => {
   );
 
   return (
-    <Card colSpan={[12, 12, 6, 4, 3]} minW={[12, 12, 6, 4, 3]}>
-      <Heading as="h1" marginBottom={8}>
-        Produkte
-      </Heading>
-
+    <Card {...props}>
       {status === 'pending' && (
         <Stack>
           {new Array(12).fill('').map((_, i) => (

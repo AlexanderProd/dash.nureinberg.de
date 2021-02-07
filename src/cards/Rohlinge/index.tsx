@@ -1,5 +1,5 @@
 import React, { useMemo, useContext } from 'react';
-import { Text, Flex, Heading, Stack, Skeleton } from '@chakra-ui/react';
+import { Text, Flex, Stack, Skeleton, GridItemProps } from '@chakra-ui/react';
 
 import MainContext from '../../context/Main';
 import { useConditionalCellStyle } from '../../hooks';
@@ -8,7 +8,7 @@ import WarningBox from '../../components/ui/WarningBox';
 import Table from '../../components/Table';
 import Card from '../../components/Card';
 
-const RohlingeCard = () => {
+const RohlingeCard = (props: GridItemProps) => {
   const {
     rohlinge: { data, status, error, fetchRohlinge },
   } = useContext(MainContext);
@@ -55,11 +55,7 @@ const RohlingeCard = () => {
   );
 
   return (
-    <Card colSpan={[12, 12, 6, 4, 3]} minW={[12, 12, 6, 4, 3]}>
-      <Heading as="h1" marginBottom={8}>
-        Rohlinge
-      </Heading>
-
+    <Card {...props}>
       {status === 'pending' && (
         <Stack>
           {new Array(12).fill('').map((_, i) => (

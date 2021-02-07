@@ -1,5 +1,5 @@
 import React from 'react';
-import { GridItem, GridItemProps } from '@chakra-ui/react';
+import { GridItem, GridItemProps, Heading } from '@chakra-ui/react';
 
 const Card = (props: GridItemProps) => (
   <GridItem
@@ -11,6 +11,9 @@ const Card = (props: GridItemProps) => (
     borderRadius="md"
     borderColor="gray.200"
   >
+    <Heading as="h1" marginBottom={8}>
+      {props.title}
+    </Heading>
     {props.children}
   </GridItem>
 );

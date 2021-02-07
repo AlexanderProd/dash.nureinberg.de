@@ -1,5 +1,12 @@
 import React, { useMemo, useContext } from 'react';
-import { Flex, Text, Box, Heading, Skeleton, Stack } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  Box,
+  Skeleton,
+  Stack,
+  GridItemProps,
+} from '@chakra-ui/react';
 import { Row } from 'react-table';
 
 import MainContext from '../../context/Main';
@@ -10,14 +17,14 @@ import Table from '../../components/Table';
 import EditRowModal from './EditRowModal';
 import Card from '../../components/Card';
 import { ShopifyIcon } from '../../components/ui/icons';
+import { Eintragung } from '../../types';
 import {
   SelectColumnFilter,
   SliderColumnFilter,
   CheckboxColumnFilter,
 } from '../../components/Table/Filters';
-import { Eintragung } from '../../types';
 
-const EintragungenCard = () => {
+const EintragungenCard = (props: GridItemProps) => {
   const {
     eintragungen: { data, status, error, fetchEintragungen },
   } = useContext(MainContext);
@@ -80,7 +87,7 @@ const EintragungenCard = () => {
         filter: 'equals',
         isNumeric: true,
         Footer: (info: any) => {
-          const total = React.useMemo(
+          const total = useMemo(
             () =>
               info.rows.reduce(
                 (sum: any, row: any) => row.values.Anzahl + sum,
@@ -164,11 +171,7 @@ const EintragungenCard = () => {
   );
 
   return (
-    <Card colSpan={12}>
-      <Heading as="h1" marginBottom={8}>
-        Eintragungen
-      </Heading>
-
+    <Card {...props}>
       <EintragungForm />
 
       <Box>
