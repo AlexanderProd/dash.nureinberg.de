@@ -74,6 +74,9 @@ const reducer = (state: State, action: ActionType): State => {
 
 const EintragungForm = () => {
   const context = useContext(MainContext);
+  const fetchEintragungen = context.eintragungen.fetchEintragungen;
+  const fetchProdukte = context.produkte.fetchProdukte;
+  const fetchRohlinge = context.rohlinge.fetchRohlinge;
   const toast = useToast();
   const [state, dispatch] = useReducer(reducer, initialState);
   const { status, error, fetchData } = useAPICall(
@@ -138,11 +141,11 @@ const EintragungForm = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      context.eintragungen.fetchEintragungen();
-      context.produkte.fetchProdukte();
-      context.rohlinge.fetchRohlinge();
+      fetchEintragungen();
+      fetchProdukte();
+      fetchRohlinge();
     }
-  }, [status, context]);
+  }, [status, fetchEintragungen, fetchProdukte, fetchRohlinge]);
 
   return (
     <Stack
