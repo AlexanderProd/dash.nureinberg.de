@@ -103,12 +103,12 @@ const EditRowModal = ({ row }: { row: any }) => {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, error, fetchData } = useAPICall(
-    `/bestand/eintragung/${row?.values['Id']}`,
-    'PUT',
-    state,
-    false
-  );
+  const { status, error, fetchData } = useAPICall({
+    url: `/bestand/eintragung/${row?.values['Id']}`,
+    method: 'PUT',
+    body: state,
+    immediate: false,
+  });
 
   useEffect(() => {
     if (status === 'error') {

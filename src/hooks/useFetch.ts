@@ -19,15 +19,20 @@ type ActionType<T> =
 
 // Hook output
 interface ReturnType<T> extends State<T> {
-  fetchData: () => Promise<void>;
+  fetchData: (cancelRequest?: boolean, body?: any) => Promise<void>;
+}
+
+interface ArgumentsObject {
+  url: string;
+  options?: RequestInit;
+  cached?: boolean;
+  immediate?: boolean;
 }
 
 export function useFetch<T = unknown>(
-  url: string,
-  options?: RequestInit,
-  cached = false,
-  immediate = true
+  argumentsObject: ArgumentsObject
 ): ReturnType<T> {
+  const { url, options, cached, immediate } = argumentsObject;
   const cache = useRef<Cache<T>>({});
 
   const initialState: State<T> = {
@@ -52,14 +57,19 @@ export function useFetch<T = unknown>(
   const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   const fetchData = useCallback(
-    async (cancelRequest: boolean = false) => {
+    async (cancelRequest: boolean = false, body?: any) => {
       dispatch({ type: 'REQUEST' });
 
       if (cache.current[url] && cached) {
         dispatch({ type: 'SUCCESS', payload: cache.current[url] });
       } else {
         try {
-          const res = await fetch(url, options);
+          const requestInit: RequestInit = {
+            ...options,
+          };
+          if (body) requestInit.body = JSON.stringify(body);
+
+          const res = await fetch(url, requestInit);
           const json = await res.json();
           cache.current[url] = json;
 

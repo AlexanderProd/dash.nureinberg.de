@@ -3,12 +3,15 @@ import { useRef } from 'react';
 import { apiEndpoint } from '../utils';
 import { useFetch } from './index';
 
-export const useAPICall = <T>(
-  url: string,
-  method = 'GET',
-  body?: any,
-  immediate = true
-) => {
+interface ArgumentsObject {
+  url: string;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  body?: object;
+  immediate?: boolean;
+}
+
+export const useAPICall = <T>(argumentsObject: ArgumentsObject) => {
+  const { method, url, body, immediate } = argumentsObject;
   const options: RequestInit = {
     method,
     body: JSON.stringify(body),
@@ -27,5 +30,10 @@ export const useAPICall = <T>(
     ref.current = options;
   }
 
-  return useFetch<T>(apiEndpoint + url, ref.current, false, immediate);
+  return useFetch<T>({
+    url: apiEndpoint + url,
+    options: ref.current,
+    cached: false,
+    immediate,
+  });
 };

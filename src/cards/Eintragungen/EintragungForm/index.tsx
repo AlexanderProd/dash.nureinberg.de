@@ -79,12 +79,12 @@ const EintragungForm = () => {
   const fetchRohlinge = context.rohlinge.fetchRohlinge;
   const toast = useToast();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, error, fetchData } = useAPICall(
-    `/bestand/eintragung`,
-    'POST',
-    state,
-    false
-  );
+  const { status, error, fetchData } = useAPICall({
+    url: '/bestand/eintragung',
+    method: 'POST',
+    immediate: false,
+    body: state,
+  });
 
   useEffect(() => {
     if (status === 'error') {

@@ -18,12 +18,11 @@ const DeleteAlert = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
-  const { status, error, fetchData } = useAPICall(
-    `/bestand/eintragung/${id}`,
-    'DELETE',
-    {},
-    false
-  );
+  const { status, error, fetchData } = useAPICall({
+    url: `/bestand/eintragung/${id}`,
+    method: 'DELETE',
+    immediate: false,
+  });
 
   if (error) console.error(error);
 

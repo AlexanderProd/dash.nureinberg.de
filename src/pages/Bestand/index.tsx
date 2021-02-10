@@ -24,7 +24,7 @@ const BestandPage = () => {
         maxH="100%"
       />
       <Ausstehend
-        title="Ausstehend"
+        title="Zu Produzieren"
         colSpan={[12, 12, 6, 4, 3]}
         minW={[12, 12, 6, 4, 3]}
         rowSpan={1}
