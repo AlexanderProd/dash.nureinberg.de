@@ -26,6 +26,7 @@ const OpenProductBox = ({
             colorScheme="green"
             size="sm"
             isLoading={status === 'pending'}
+            title="Als Produziert festlegen."
             onClick={() => addProductionEntry(produkt)}
           >
             <CheckIcon />
