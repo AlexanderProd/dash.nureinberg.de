@@ -19,7 +19,11 @@ type ActionType<T> =
 
 // Hook output
 interface ReturnType<T> extends State<T> {
-  fetchData: (cancelRequest?: boolean, body?: any) => Promise<void>;
+  fetchData: (
+    cancelRequest?: boolean,
+    body?: any,
+    overwriteURL?: string
+  ) => Promise<void>;
 }
 
 interface ArgumentsObject {
@@ -57,11 +61,18 @@ export function useFetch<T = unknown>(
   const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   const fetchData = useCallback(
-    async (cancelRequest: boolean = false, body?: any) => {
+    async (
+      cancelRequest: boolean = false,
+      body?: any,
+      overwriteURL?: string
+    ) => {
       dispatch({ type: 'REQUEST' });
 
-      if (cache.current[url] && cached) {
-        dispatch({ type: 'SUCCESS', payload: cache.current[url] });
+      if (cache.current[overwriteURL || url] && cached) {
+        dispatch({
+          type: 'SUCCESS',
+          payload: cache.current[overwriteURL || url],
+        });
       } else {
         try {
           const requestInit: RequestInit = {
@@ -69,9 +80,9 @@ export function useFetch<T = unknown>(
           };
           if (body) requestInit.body = JSON.stringify(body);
 
-          const res = await fetch(url, requestInit);
+          const res = await fetch(overwriteURL || url, requestInit);
           const json = await res.json();
-          cache.current[url] = json;
+          cache.current[overwriteURL || url] = json;
 
           if (cancelRequest) return;
 
