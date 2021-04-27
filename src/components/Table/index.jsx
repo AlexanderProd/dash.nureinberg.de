@@ -115,6 +115,7 @@ const Table = ({
         pageIndex: 0,
         pageSize: defaultPageSize,
       },
+      autoResetFilters: false,
     },
     useFilters,
     useGlobalFilter,
