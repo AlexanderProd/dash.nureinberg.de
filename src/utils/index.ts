@@ -1,4 +1,4 @@
 export const apiEndpoint =
   process.env.NODE_ENV === 'production'
-    ? 'https://api.nureinberg.de'
+    ? 'https://nureinberg-bestand-api.alexanderhoerl.de'
     : 'http://localhost:3000';
